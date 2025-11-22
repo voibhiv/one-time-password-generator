@@ -40,7 +40,7 @@ export class ResponseFormatInterceptor implements NestInterceptor {
           subscriber.next({
             message,
             statusCode,
-            errorMessages: errorMessages.length ? errorMessages : undefined,
+            errorMessages: errorMessages.length > 1 ? errorMessages : undefined,
             data: null,
           });
           subscriber.complete();

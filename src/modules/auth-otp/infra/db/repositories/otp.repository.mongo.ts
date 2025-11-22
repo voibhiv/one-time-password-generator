@@ -41,6 +41,11 @@ export class OtpRespositoryMongo extends OtpRepository {
     });
   }
 
+  async findOtpByCodeAndDelete(code: string): Promise<OtpEntity | null> {
+    const deletedOtp = await this.otpModel.findOneAndDelete({ code }).exec();
+    return deletedOtp;
+  }
+
   async deleteOtp(code: string): Promise<void> {
     await this.otpModel.deleteOne({ code }).exec();
   }

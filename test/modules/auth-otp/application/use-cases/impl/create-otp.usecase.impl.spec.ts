@@ -7,7 +7,7 @@ import { OtpCollisionException } from 'src/shared/exceptions/auth-otp/otp-collis
 describe('CreateOtpUseCaseImpl', () => {
   let useCase: CreateOtpUseCaseImpl;
   let otpRepository: jest.Mocked<OtpRepository>;
-  const mockId = 'u13871M3132190271';
+  const mockId = '64a1f8b6f1c2a9e1d2a3b4c5';
 
   beforeEach(() => {
     // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment

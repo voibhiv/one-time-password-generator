@@ -2,6 +2,8 @@ import { Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
 import { CreateOtpUseCase } from 'src/modules/auth-otp/application/use-cases/create-otp.usecase';
 import { CreateOtpUseCaseImpl } from 'src/modules/auth-otp/application/use-cases/impl/create-otp.usecase.impl';
+import { ValidateOtpUseCaseImpl } from 'src/modules/auth-otp/application/use-cases/impl/validate-otp.usecase.impl';
+import { ValidateOtpUseCase } from 'src/modules/auth-otp/application/use-cases/validate-otp.usecase';
 import { OtpRepository } from 'src/modules/auth-otp/domain/repositories/otp.repository';
 import { OtpRespositoryMongo } from 'src/modules/auth-otp/infra/db/repositories/otp.repository.mongo';
 import {
@@ -21,6 +23,10 @@ import { AuthOtpController } from 'src/modules/auth-otp/interface/http/auth-otp.
     {
       provide: CreateOtpUseCase,
       useClass: CreateOtpUseCaseImpl,
+    },
+    {
+      provide: ValidateOtpUseCase,
+      useClass: ValidateOtpUseCaseImpl,
     },
     {
       provide: OtpRepository,

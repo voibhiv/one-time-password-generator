@@ -14,7 +14,6 @@ async function bootstrap(): Promise<void> {
     .setTitle('OTP Service')
     .setDescription('API para geração e validação de tokens OTP')
     .setVersion('1.0')
-    .addTag('OTP')
     .build();
 
   const document = SwaggerModule.createDocument(app, config);
