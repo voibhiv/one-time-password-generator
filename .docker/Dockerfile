@@ -4,8 +4,8 @@ WORKDIR /usr/app
 
 COPY package*.json ./
 COPY .env ./
-RUN npm install --frozen-lockfile
 
+RUN npm install
 RUN npm install -g @nestjs/cli
 
 COPY . .

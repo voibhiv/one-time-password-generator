@@ -1,98 +1,122 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="120" alt="Nest Logo" /></a>
-</p>
+# One Time Password Generator 🚀🔐
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+Lightweight NestJS service that generates and validates One Time Passwords (OTPs) using MongoDB as the datastore. The project is configured to run with Docker Compose and includes Swagger docs for the HTTP API.
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg" alt="Donate us"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow" alt="Follow us on Twitter"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+## 🔧 Technologies
+- NestJS
+- MongoDB (Mongoose)
+- Docker & Docker Compose
+- Swagger (OpenAPI)
 
-## Description
+## 🔐 What is this
+This repository implements a small OTP service: create short numeric OTP codes that expire after a configurable time (seconds). The service persists OTPs in MongoDB and supports validation endpoints. TTL expiration is handled with a MongoDB TTL index on an `expiredAt` field (and additionally validated in application logic).
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+## Prerequisites
+- Docker
+- Docker Compose
+- Node.js / npm (only required for running locally without Docker)
 
-## Project setup
+## 🚀 Run with Docker (recommended)
+Follow these steps to run the project using the provided Docker configuration.
+
+1. Clone the repository
 
 ```bash
-$ npm install
+  git clone https://github.com/voibhiv/one-time-password-generator.git
+  cd one-time-password-generator
 ```
 
-## Compile and run the project
+2. Copy or adapt environment variables
 
 ```bash
-# development
-$ npm run start
-
-# watch mode
-$ npm run start:dev
-
-# production mode
-$ npm run start:prod
+  cp .env.example .env
 ```
 
-## Run tests
+3. Update environment variables to match the Docker network
+
+- In Docker Compose the MongoDB service name is `mongodb` and its internal port is `27017`.
+- Update `MONGO_URI` in `.env` to point to the `mongodb` service when running with Docker Compose, for example:
+
+```properties
+  PORT=3000
+  MONGO_URI=mongodb://mongodb:27017/otp-generator-db
+```
+
+> Note: The app container exposes port `3000` by default (mapped in the compose file). If you change the mapping, update `PORT` accordingly.
+
+4. Enter the `.docker` folder
 
 ```bash
-# unit tests
-$ npm run test
-
-# e2e tests
-$ npm run test:e2e
-
-# test coverage
-$ npm run test:cov
+  cd .docker
 ```
 
-## Deployment
-
-When you're ready to deploy your NestJS application to production, there are some key steps you can take to ensure it runs as efficiently as possible. Check out the [deployment documentation](https://docs.nestjs.com/deployment) for more information.
-
-If you are looking for a cloud-based platform to deploy your NestJS application, check out [Mau](https://mau.nestjs.com), our official platform for deploying NestJS applications on AWS. Mau makes deployment straightforward and fast, requiring just a few simple steps:
+5. Start services with Docker Compose
 
 ```bash
-$ npm install -g @nestjs/mau
-$ mau deploy
+  docker-compose up --build -d
 ```
 
-With Mau, you can deploy your application in just a few clicks, allowing you to focus on building features rather than managing infrastructure.
+You can now access the application at: http://localhost:3000
 
-## Resources
+## 📚 API & Swagger
+Swagger UI is available at:
 
-Check out a few resources that may come in handy when working with NestJS:
+```
+http://localhost:3000/docs
+```
 
-- Visit the [NestJS Documentation](https://docs.nestjs.com) to learn more about the framework.
-- For questions and support, please visit our [Discord channel](https://discord.gg/G7Qnnhy).
-- To dive deeper and get more hands-on experience, check out our official video [courses](https://courses.nestjs.com/).
-- Deploy your application to AWS with the help of [NestJS Mau](https://mau.nestjs.com) in just a few clicks.
-- Visualize your application graph and interact with the NestJS application in real-time using [NestJS Devtools](https://devtools.nestjs.com).
-- Need help with your project (part-time to full-time)? Check out our official [enterprise support](https://enterprise.nestjs.com).
-- To stay in the loop and get updates, follow us on [X](https://x.com/nestframework) and [LinkedIn](https://linkedin.com/company/nestjs).
-- Looking for a job, or have a job to offer? Check out our official [Jobs board](https://jobs.nestjs.com).
+Main endpoints (HTTP):
 
-## Support
+- POST /auth-otp/create — create a new OTP
+	- Body (JSON): { "code": string (ignored), "timeToLive": number }
+	- Response: OTP object with fields `id`, `code`, `timeToLive`, `expiredAt` (ISO UTC)
 
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
+- POST /auth-otp/validate — validate and consume an OTP
+	- Body (JSON): { "code": string }
+	- Response: { message: string }
 
-## Stay in touch
+Example (create):
 
-- Author - [Kamil Myśliwiec](https://twitter.com/kammysliwiec)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
+```bash
+curl -X POST http://localhost:3000/auth-otp/create \
+	-H 'Content-Type: application/json' \
+	-d '{"timeToLive": 30}'
+```
 
-## License
+Example (validate):
 
-Nest is [MIT licensed](https://github.com/nestjs/nest/blob/master/LICENSE).
+```bash
+curl -X POST http://localhost:3000/auth-otp/validate \
+	-H 'Content-Type: application/json' \
+	-d '{"code": "123456"}'
+```
+
+## 🧪 Tests
+Unit tests are under the `test/` folder grouped by module. To run tests:
+
+```bash
+npm run test
+```
+
+## 📁 Project Structure (high level)
+
+```
+src/
+	modules/
+		auth-otp/
+			application/
+				dto/
+				use-cases/
+			domain/
+			infra/
+			interface/
+	main.ts
+test/  # unit tests per module
+```
+
+## 📝 Notes & tips
+- TTL in MongoDB is handled by a TTL index on `expiredAt`. Mongo's TTL background job runs periodically (≈ every 60s), so documents may be removed a short while after `expiredAt`.
+- The service also checks `expiredAt` in application logic to prevent race conditions (so an OTP considered expired will be rejected even if the document is still present).
+- If you run into port conflicts, update the port mappings in `.docker/compose.yml` and the `PORT` and `MONGO_URI` variables in your `.env`.
+
+---
