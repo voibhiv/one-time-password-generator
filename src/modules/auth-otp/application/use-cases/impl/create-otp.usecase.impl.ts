@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, Logger } from '@nestjs/common';
 import { OtpInput } from 'src/modules/auth-otp/application/dto/input/otp.input';
 import { OtpOutput } from 'src/modules/auth-otp/application/dto/output/otp.output';
 import { CreateOtpUseCase } from 'src/modules/auth-otp/application/use-cases/create-otp.usecase';
@@ -8,6 +8,7 @@ import { OtpCollisionException } from 'src/shared/exceptions/auth-otp/otp-collis
 
 @Injectable()
 export class CreateOtpUseCaseImpl extends CreateOtpUseCase {
+  private readonly logger = new Logger(CreateOtpUseCaseImpl.name);
   constructor(private readonly otpRepository: OtpRepository) {
     super();
   }
@@ -23,12 +24,15 @@ export class CreateOtpUseCaseImpl extends CreateOtpUseCase {
   protected async validatorCreateOtp(code: string): Promise<void> {
     const findOtpCode = await this.otpRepository.findOtpByCode(code);
     if (findOtpCode) {
+      this.logger.warn(`OTP code collision detected for code=${code}`);
       throw new OtpCollisionException();
     }
   }
 
   async execute(input: OtpInput): Promise<OtpOutput> {
     const code = this.generateCode();
+
+    this.logger.log(`Generated OTP code=${code}`);
 
     await this.validatorCreateOtp(code);
 
@@ -41,6 +45,7 @@ export class CreateOtpUseCaseImpl extends CreateOtpUseCase {
     });
 
     const createdOtp = await this.otpRepository.createOtp(otpEntity);
+    this.logger.log(`OTP stored code=${createdOtp.code}`);
 
     return new OtpOutput(createdOtp);
   }
