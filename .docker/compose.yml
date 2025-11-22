@@ -19,6 +19,8 @@ services:
   mongodb:
     image: mongo:latest
     container_name: mongodb-otp-generator
+    environment:
+      MONGO_INITDB_DATABASE: otp-generator-db
     volumes:
       - ../database:/data/db
     ports:
