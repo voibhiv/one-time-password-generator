@@ -1,0 +1,35 @@
+services:
+  app:
+    container_name: otp-generator-app
+    build:
+      context: ..
+      dockerfile: .docker/Dockerfile
+    command: npx nest start
+    ports:
+      - '3000:3000'
+    networks:
+      - otp-network
+    depends_on:
+      - mongodb
+    volumes:
+      - ..:/usr/app
+      - /usr/app/node_modules
+    restart: unless-stopped
+
+  mongodb:
+    image: mongo:latest
+    container_name: mongodb-otp-generator
+    volumes:
+      - ../database:/data/db
+    ports:
+      - "27017:27017"
+    networks:
+      - otp-network
+    restart: always
+
+networks:
+  otp-network:
+    driver: bridge
+
+volumes:
+  otp-generator-app-volume:
