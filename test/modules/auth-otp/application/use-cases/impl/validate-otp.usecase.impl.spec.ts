@@ -20,7 +20,7 @@ describe('ValidateOtpUseCaseImpl', () => {
   it('should validate and return a message when OTP is valid', async () => {
     const future = new Date(Date.now() + 60000);
     const otp: OtpEntity = {
-      id: '1',
+      id: '64a1f8b6f1c2a9e1d2a3b4c5',
       code: '123456',
       timeToLive: 60,
       expiredAt: future,
@@ -47,7 +47,7 @@ describe('ValidateOtpUseCaseImpl', () => {
   it('should throw OtpExpiredException when OTP expired', async () => {
     const past = new Date(Date.now() - 60000);
     const otp: OtpEntity = {
-      id: '2',
+      id: '64a1f8b6f1c2a9e1d2a3b4c5',
       code: '654321',
       timeToLive: 60,
       expiredAt: past,
